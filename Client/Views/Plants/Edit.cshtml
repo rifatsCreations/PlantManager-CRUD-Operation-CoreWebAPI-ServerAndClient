@@ -1,0 +1,96 @@
+﻿@model Client.Models.ViewModels.PlantViewModel
+@{
+    ViewData["Title"] = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string imageUrl = ViewBag.ApiUrl;
+}
+<div class="card">
+    <div class="card-header">
+        <div class="card-title"><h3>Update Plant</h3></div>
+    </div>
+    <div class="card-body">
+        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="row">
+                <div class="col-md-6">
+                    <h4>Update Employee</h4>
+                    <input hidden asp-for="PlantId" class="form-control" />
+                    <input type="hidden" asp-for="ImageUrl" />
+                    <div class="form-group">
+                        <label asp-for="PlantName" class="control-label"></label>
+                        <input asp-for="PlantName" class="form-control" />
+                        <span asp-validation-for="PlantName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mt-3">
+                        <label asp-for="Date" class="control-label"></label>
+                        <input asp-for="Date" class="form-control" />
+                        <span asp-validation-for="Date" class="text-danger"></span>
+                    </div>
+                    <div class="form-group form-check mt-3">
+                        <label class="form-check-label">
+                            <input class="form-check-input" asp-for="IsFlowerBearing" /> @Html.DisplayNameFor(model => model.IsFlowerBearing)
+                        </label>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label asp-for="PlantPrice" class="control-label"></label>
+                        <input asp-for="PlantPrice" class="form-control" />
+                        <span asp-validation-for="PlantPrice" class="text-danger"></span>
+                    </div>
+                   
+                    <div class="form-group mt-3">
+                        <input onchange="ReadUrl(this)" type="file" name="ProfileFile" id="ProfileFile" class="form-control" />
+                        <img id="ImgF" src=@Url.Content(imageUrl + Model.ImageUrl) alt="Alternate Text" width="150" />
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h4>Update Care Types</h4>
+                    <button onclick="AddPct()" type="button" class="btn btn-outline-success btn-sm">Update Care Types</button>
+                    
+                    @Html.Partial("_AddPlantCares", Model.PlantCareTypes)
+                </div>
+            </div>
+            <div class="form-group mt-3">
+                <input type="submit" value="Update" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function ReadUrl(i) {
+        if (i.files && i.files[0]) {
+            var red = new FileReader()
+            red.onload = function (e) {
+                $("#ImgF").attr('src', e.target.result)
+            }
+            red.readAsDataURL(i.files[0])
+        }
+    };
+    function AddPct() {
+        var tableBody = $("#Pct tbody"); 
+        var index = tableBody.find("tr").length;
+        var newRow = `
+            <tr class="mb-3">
+                <td><input class="form-control" type="text" name="PlantCareTypes[${index}].InsecticideName" /></td>
+                <td><input class="form-control" type="text" name="PlantCareTypes[${index}].Fertilizer" /></td>
+                <td><button onclick="DeleteRow(this)" type="button" class="btn btn-danger">Remove</button></td>
+            </tr>`;
+        tableBody.append(newRow);
+    }
+    function DeleteRow(btn) {
+        $(btn).closest('tr').remove();
+        UpdatePlantCareTypesIndex();
+    }
+    function UpdatePlantCareTypesIndex() {
+        $("#Pct tbody tr").each(function (index) {
+            $(this).find("input[name^='PlantCareTypes']").each(function () {
+                var name = $(this).attr("name");
+                name = name.replace(/PlantCareTypes\[\d+\]/, "PlantCareTypes[" + index + "]");
+                $(this).attr("name", name);
+            });
+        });
+    }
+</script>
+

@@ -1,0 +1,53 @@
+﻿@model Client.Models.Plant
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow p-4 mb-5 bg-white rounded" style="max-width: 600px;">
+       
+        <div class="card-header text-center border-0 pb-0">
+          
+            <div class="rounded-circle overflow-hidden mx-auto mb-3 border border-3 border-light" style="width: 150px; height: 150px;">
+                
+                @if (!string.IsNullOrEmpty(Model.ImageUrl))
+                {
+                    <img src=@Url.Content("http://localhost:5071" + Model.ImageUrl) class="card-img-top img-fluid" alt="Plant Image" style="object-fit: cover; width: 100%; height: 100%;">
+                }
+                else
+                {
+                    <img src=@Url.Content("http://localhost:5071/noimage.png") class="card-img-top img-fluid" alt="No Image" style="object-fit: cover; width: 100%; height: 100%;">
+                }
+            </div>
+            <h4 class="card-title fw-bold mb-2">@Html.DisplayFor(model => model.PlantName)</h4> 
+            <hr /> 
+        </div>
+        <div class="card-body">
+            <div class="mb-3">
+               
+                <p><strong>Date:</strong> @Html.DisplayFor(model => model.Date)</p>
+                <p class="mb-1"><strong>Plant Status:</strong> @(Model.IsFlowerBearing ? "Flower Bearing?" : "Not Flower Bearing?")</p>
+                
+            </div>
+            <div>
+               
+                <strong class="mb-2 d-block">Plant Care Type:</strong>
+                <ul class="list-unstyled">
+                    @foreach (var e in Model.PlantCareTypes)
+                    {
+                        <li class="mb-2">@e.InsecticideName - @e.Fertilizer</li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div class="card-footer text-center border-0 pt-0">
+            
+            <hr /> 
+            <a asp-action="Edit" asp-route-id="@Model.PlantId" class="btn btn-primary me-2">Edit</a>
+            <a asp-action="Delete" asp-route-id="@Model.PlantId" class="btn btn-danger me-2">Delete</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,29 @@
+﻿@model List<Client.Models.PlantCareType>
+<table id="Pct" class="table table-bordered">
+    <thead>
+        <tr>
+            <th>Insecticide Name</th>
+            <th>Fertilizer</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null)
+        {
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <tr>
+                    <td>
+                        <input type="text" class="form-control" name="PlantCareTypes[@i].InsecticideName" value="@Model[i].InsecticideName" />
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" name="PlantCareTypes[@i].Fertilizer" value="@Model[i].Fertilizer" />
+                    </td>
+                    <td>
+                        <button type="button" class="btn btn-danger" onclick="DeleteRow(this)">Remove</button>
+                    </td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>

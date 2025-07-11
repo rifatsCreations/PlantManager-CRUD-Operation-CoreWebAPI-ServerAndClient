@@ -1,0 +1,53 @@
+﻿@model IEnumerable<Client.Models.Plant>
+
+@{
+    ViewData["Title"] = "Plant List";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string imageUrl = ViewBag.ApiUrl;
+}
+
+<div class="container mt-4">
+
+    <!-- Navigation -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="text-success fs-4">🌿 Plant List</h2>
+        <a asp-action="Create" class="btn btn-success btn-sm">+ Add New Plant</a>
+    </div>
+
+    <!-- Card Grid (4 per row on large screen) -->
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-3" >
+        @foreach (var item in Model)
+        {
+            <div class="col">
+                <div class="card h-100 shadow-sm border-0 rounded-3" style="font-size: 0.85rem;">
+                    <img src="@Url.Content(imageUrl + item.ImageUrl)" class="card-img-top" alt="Plant Image" style="object-fit: cover; height: 140px;">
+
+                    <div class="card-body p-2" style="background-color:antiquewhite">
+                        <h6 class="card-title text-primary fw-semibold mb-1">@item.PlantName</h6>
+                        <p class="mb-1"><strong>Date:</strong> @item.Date.ToShortDateString()</p>
+                        <p class="mb-1"><strong>Flower:</strong> @(item.IsFlowerBearing ? "Yes" : "No")</p>
+                        <p class="mb-1"><strong>Price:</strong> ৳@item.PlantPrice</p>
+
+                        <div>
+                            <strong style="color:brown;font-size:larger" >Care:</strong>
+                            <ul class="mb-0 ps-3">
+                                @foreach (var pct in item.PlantCareTypes)
+                                {
+                                    <li style="font-size: 0.8rem;">
+                                        @pct.InsecticideName - @pct.Fertilizer
+                                    </li>
+                                }
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0 px-2 py-1 d-flex justify-content-between">
+                        <a asp-action="Edit" asp-route-id="@item.PlantId" class="btn btn-outline-primary btn-sm">Edit</a>
+                        <a asp-action="Details" asp-route-id="@item.PlantId" class="btn btn-outline-info btn-sm">Details</a>
+                        <a asp-action="Delete" asp-route-id="@item.PlantId" class="btn btn-outline-danger btn-sm">Delete</a>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
