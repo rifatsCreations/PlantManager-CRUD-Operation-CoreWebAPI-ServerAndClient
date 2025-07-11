@@ -88,7 +88,7 @@ No need for any additional setup like SDK install, SQL Server configuration, or 
 ## 🧑‍💻 Author
 
 **Md.Rifat Hossain**  
-GitHub: [https://github.com/yourusername](https://github.com/rifatsCreations)  
+GitHub: [https://github.com/rifatsCreations](https://github.com/rifatsCreations)  
 Email: mrifat621@gmail.com
 
 ---
